@@ -1,0 +1,1 @@
+rm -rf *;mkdir -p 20{18..19}/{01..05};touch {2018..2019}{01..05}{1..5}.txt; for i in `ls|grep txt`;do echo $i>$i;done; for i in {2018..2019};do for j in {01..05};do mv $i$j* $i/$j;done;done
