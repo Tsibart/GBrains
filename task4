@@ -14,19 +14,14 @@ sed -i '/^$/d' /tmp/tmpfile.txt | mv /tmp/tmpfile.txt $file
 
 #Задание 2
 #создать  директории для нескольких годов (2010 — 2017),
-в них — поддиректории для месяцев (от 01 до 12), и 
-в каждый из них запишет несколько файлов с
-произвольными записями (например, 001.txt, содержащий текст«Файл 001», 002.txt с текстом Файл 002) и т. д.
-#!/bin/bash -x
-rm -rf *;
-mkdir -p 20{10..17}/{01..12};
-touch {001..012}.txt;
-for i in `ls|grep txt`;do echo $i>$i;done; 
+#в них — поддиректории для месяцев (от 01 до 12), и 
+в каждый из них несколько файлов XXX.txt, содержащий текст "Файл 001"
 
-for f in `ls|grep txt`;
-    do for a in {2010..2017};
-          do for j in {01..12};
-              do cp /home/$f /home/$a/$j/$f;done;done;done
+#!/bin/bash -x
+mkdir /home/folder;
+rm -rf /home/folder/*;
+mkdir -p /home/folder/20{10..17}/{01..12};
+for a in {2010..2017};do for j in {01..12};do touch /home/folder/$a/$j/0$j.txt;echo "Файл 0$j">/home/folder/$a/$j/0$j.txt;done;done
 
 
 * Создать файл crontab, который ежедневно регистрирует занятое каждым пользователем дисковое пространство в его домашней директории.
