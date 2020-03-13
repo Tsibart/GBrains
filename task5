@@ -1,13 +1,33 @@
 #задание 1
 Произвести ручную настройку сети в Ubuntu используя nmcli или Ip и изменив файл /etc/network/interfaces. 
 Для Ubuntu server использовать netplan.
-тут поверить только на слова проблем с настройкой сети пока не встречал. 
+Тут прийдется поверить на слова, проблем с настройкой сети на данном уровне пока еще не встречал. 
 
 #задание 2
 #Настроить правила iptables, чтобы из внешней сети можно было обратиться только к портам 80 и 443. 
-iptables -P INPUT DROP
-iptables -A INPUT --dport 80 -j ACCEPT
-iptables -A INPUT --dport 443 -j ACCEPT
-Запросы на порт 8080 перенаправлять на порт 80.
+#Запросы на порт 8080 перенаправлять на порт 80.
+#настроить доступ по ssh только из указанной сети (например 185.38.165.0/16)
+
+iptables -P INPUT DROP 
+iptables -P FORWARD DROP
+iptables -P OUTPUT ACCEPT
+
+#PREROUTING
+iptables -t nat -A PREROUTING -p tcp --dport 8080 -j REDIRECT --to-port 80    #Запросы на порт 8080 перенаправлять на порт 80.
+
+#INPUT
+iptables -A INPUT -i lo -j ACCEPT                                       #Разрешить входящие соединения с локалхоста
+iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT        #Разрешаем продолжать использовать связанные и установленые соединения
+iptables -A INPUT -p icmp -j ACCEPT                                     #Разрешаем служебный icmp-трафик
+
+iptables -A INPUT -p TCP -m multiport  80,443 -j ACCEPT
+iptables -A INPUT -p tcp --dport 22 -s 185.38.165.0/16 -j ACCEPT
+
+#FORWARD
+.......
+
+#OUTPUT
+iptables -A OUTPUT -p tcp --sport 22 -d 185.38.165.0/16 -j ACCEPT
+
 #задание 3
-* Дополнительно к предыдущему заданию настроить доступ по ssh только из указанной сети.
+Добавлено в конфиг задания 2
