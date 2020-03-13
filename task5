@@ -27,6 +27,7 @@ iptables -A INPUT -p tcp --dport 22 -s 185.38.165.0/16 -j ACCEPT
 .......
 
 #OUTPUT
+# если тут все открыто "iptables -P OUTPUT ACCEPT",  то нужно ли вносить строчку ниже. Думаю что ни на что не влияет
 iptables -A OUTPUT -p tcp --sport 22 -d 185.38.165.0/16 -j ACCEPT
 
 #задание 3
