@@ -1,6 +1,36 @@
 #Оставляю как есть в методичке. Если нет возможности регистрации в облаке, прошу указть в коментарии к ДЗ:
+Нет возможноти
 #Настроить виртуальный сервер в облаке (GCP, AWS, VDS и др.) с публичным IP-адресом.
-#Зарегистрировать свой домен через freenom.com.
-#* Настроить фаервол, чтобы был доступ только к сервисам http и ssh.
+Поднял виртуалку  с белым IP 217.24.178.136, пробросил весь трафик на нее.
+Воспользовался существующим доменам и добавил А запись gbtsibart@lamel.shop
+#* Настроить фаервол, чтобы был доступ только к сервисам http и ssh. (добавил https 443 вдрг ssl использовать будем)
+......
+:INPUT DROP [23464:1658617]
+:FORWARD DROP [0:0] 
+:OUTPUT ACCEPT [74:14056]
+#INPUT
+#INPUT Разрешить входящие соединения с локалхоста
+-A INPUT -i lo -j ACCEPT
+#Разрешаем продолжать использовать связанные и установленные соединения
+-A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+#Разрешаем служебный icmp-трафик
+-A INPUT -p icmp -j ACCEPT 
+-A INPUT -p tcp -m tcp --dport 22 -j ACCEPT 
+-A INPUT -p tcp -m tcp --dport 80 -j ACCEPT 
+-A INPUT -p tcp -m tcp --dport 443 -j ACCEPT 
+COMMIT
+......
 #* Установить веб-сервер Nginx и подключиться к нему — прислать скриншот.
+
+root@ts:/home/ts# systemctl status nginx
+● nginx.service - A high performance web server and a reverse proxy server
+   Loaded: loaded (/lib/systemd/system/nginx.service; enabled; vendor preset: enabled)
+   Active: active (running) since Mon 2020-03-16 11:32:48 UTC; 11s ago
+     Docs: man:nginx(8)
+ Main PID: 3360 (nginx)
+    Tasks: 2 (limit: 2304)
+   CGroup: /system.slice/nginx.service
+           ├─3360 nginx: master process /usr/sbin/nginx -g daemon on; master_process on;
+           └─3363 nginx: worker process
+           
 #* Передать управление NS-записями на cloudflare.com
