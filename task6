@@ -1,7 +1,7 @@
 #Оставляю как есть в методичке. Если нет возможности регистрации в облаке, прошу указть в коментарии к ДЗ:
-Нет возможноти
+Сейчас нет возможноти, но опыт имею. 
 #Настроить виртуальный сервер в облаке (GCP, AWS, VDS и др.) с публичным IP-адресом.
-Поднял виртуалку  с белым IP 217.24.178.136, пробросил весь трафик на нее.
+Поднял виртуалку с белым IP 217.24.178.136, пробросил весь трафик на нее.
 Воспользовался существующим доменам и добавил А запись gbtsibart@lamel.shop
 #* Настроить фаервол, чтобы был доступ только к сервисам http и ssh. (добавил https 443 вдрг ssl использовать будем)
 ......
@@ -20,7 +20,7 @@
 -A INPUT -p tcp -m tcp --dport 443 -j ACCEPT 
 COMMIT
 ......
-#* Установить веб-сервер Nginx и подключиться к нему — прислать скриншот.
+#* Установить веб-сервер Nginx и подключиться к нему .
 
 root@ts:/home/ts# systemctl status nginx
 ● nginx.service - A high performance web server and a reverse proxy server
@@ -33,4 +33,7 @@ root@ts:/home/ts# systemctl status nginx
            ├─3360 nginx: master process /usr/sbin/nginx -g daemon on; master_process on;
            └─3363 nginx: worker process
            
-#* Передать управление NS-записями на cloudflare.com
+#Ссылка на скриншот с локальной машины и VPN прокси
+https://ibb.co/8XCvyxv
+           
+
