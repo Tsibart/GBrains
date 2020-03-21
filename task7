@@ -1,7 +1,5 @@
 #Установить Nginx и настроить его на работу с php-fpm.
-#Настроить Nginx в качестве балансировщика. 
-#Используя mod_upstream, раскидывать весь входящий трафик по трем Apache2-серверам, 
-#находящимся в локальной сети. настроить Nignx + ssl с использованием cert-manager (материал в доп ссылке в комментариях)
+
 sudo apt update
 sudo apt install nginx
 sudo apt install  php7.3 php7.3-fpm php7.3-cgi
@@ -28,3 +26,28 @@ sudo systemctl restart nginx.service
 #для теста создадим страницу info.php
 sudo echo "<?php phpinfo(); ?>" > /var/www/html/info.php
 #результат тут https://ibb.co/TY3DWqw
+
+
+#Настроить Nginx в качестве балансировщика. 
+пересабираем nginx c модулем ngx_http_upstream_module
+#Используя mod_upstream, раскидывать весь входящий трафик по трем Apache2-серверам, 
+http {
+  upstream service_backend_apache {
+    server 192.168.2.111;
+    server 192.168.2.112;
+    server 192.168.2.113;
+  }
+
+  server {
+    listen 80;
+
+    location / {
+      proxy_pass http://service_backend_apache;
+    }
+  }
+}
+
+#находящимся в локальной сети. настроить Nignx + ssl с использованием cert-manager (материал в доп ссылке в комментариях)
+
+
+
