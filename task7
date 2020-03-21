@@ -2,3 +2,29 @@
 #Настроить Nginx в качестве балансировщика. 
 #Используя mod_upstream, раскидывать весь входящий трафик по трем Apache2-серверам, 
 #находящимся в локальной сети. настроить Nignx + ssl с использованием cert-manager (материал в доп ссылке в комментариях)
+sudo apt update
+sudo apt install nginx
+sudo apt install  php7.3 php7.3-fpm php7.3-cgi
+sudo touch /etc/nginx/sites-available/ts.lamel.shop
+#добавляем в файл ts.lamel.shop
+server {
+        listen 80;
+        root /var/www/html;
+        index index.php index.html index.htm;
+        server_name ts.lamel.shop;
+ 
+        location / {
+            try_files $uri $uri/ =404;
+        }
+ 
+        location ~ \.php$ {
+            include snippets/fastcgi-php.conf;
+            fastcgi_pass unix:/var/run/php/php7.3-fpm.sock;
+        }
+}
+
+sudo ln -s /etc/nginx/sites-available/ts.lamel.shop /etc/nginx/sites-enabled/ts.lamel.shop
+sudo systemctl restart nginx.service
+#для теста создадим страницу info.php
+sudo echo "<?php phpinfo(); ?>" > /var/www/html/info.php
+#результат тут https://ibb.co/TY3DWqw
