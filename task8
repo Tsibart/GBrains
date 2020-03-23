@@ -15,11 +15,11 @@ iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT        #Раз�
 iptables -A INPUT -p icmp -j ACCEPT                                     #Разрешаем служебный icmp-трафик
 
 iptables -A INPUT -p TCP -m multiport  80,443 -j ACCEPT
-iptables -A INPUT -p tcp --dport 22 -s 185.38.165.0/16 -j ACCEPT
+iptables -A INPUT -p tcp --dport 22 -s 185.38.165.0/24 -j ACCEPT
 
 #FORWARD
 .......
 
 #OUTPUT
 # если тут все открыто "iptables -P OUTPUT ACCEPT",  то нужно ли вносить строчку ниже. Думаю что ни на что не влияет
-iptables -A OUTPUT -p tcp --sport 22 -d 185.38.165.0/16 -j ACCEPT
+iptables -A OUTPUT -p tcp --sport 22 -d 185.38.165.0/24 -j ACCEPT
