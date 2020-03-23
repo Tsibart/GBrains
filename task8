@@ -1,5 +1,25 @@
 #Настроить сетевой фильтр, чтобы из внешней сети можно было обратиться только к сервисам http и ssh (80 и 443).
 #Запросы, идущие на порт 8080, перенаправлять на порт 80.
 #Настроить доступ по ssh только для вашего IP-адреса (или из всей сети вашего провайдера).
-#* Создать нового пользователя, сгенерировать для него новые сертификаты. Настроить доступ на сервер вновь созданного пользователя с использованием сертификатов. Подключиться с помощью putty или ssh без ввода пароля (используя только сертификат).
-#Примечание: сертификат может быть подготовлен как в Ubuntu, так и с помощью puttygen в windows.
+
+iptables -P INPUT DROP 
+iptables -P FORWARD DROP
+iptables -P OUTPUT ACCEPT
+
+#PREROUTING
+iptables -t nat -A PREROUTING -p tcp --dport 8080 -j REDIRECT --to-port 80    #Запросы на порт 8080 перенаправлять на порт 80.
+
+#INPUT
+iptables -A INPUT -i lo -j ACCEPT                                       #Разрешить входящие соединения с локалхоста
+iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT        #Разрешаем продолжать использовать связанные и установленные соединения
+iptables -A INPUT -p icmp -j ACCEPT                                     #Разрешаем служебный icmp-трафик
+
+iptables -A INPUT -p TCP -m multiport  80,443 -j ACCEPT
+iptables -A INPUT -p tcp --dport 22 -s 185.38.165.0/16 -j ACCEPT
+
+#FORWARD
+.......
+
+#OUTPUT
+# если тут все открыто "iptables -P OUTPUT ACCEPT",  то нужно ли вносить строчку ниже. Думаю что ни на что не влияет
+iptables -A OUTPUT -p tcp --sport 22 -d 185.38.165.0/16 -j ACCEPT
